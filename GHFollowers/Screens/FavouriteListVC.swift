@@ -13,17 +13,14 @@ class FavouriteListVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBlue
+        PersistenceManager.retrieveFavourites(completed: { result in
+            switch result {
+            case .success(let favourites):
+                print(favourites)
+            case .failure(let error):
+                break
+            }
+        })
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
