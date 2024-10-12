@@ -26,12 +26,11 @@ class FavouriteCell: UITableViewCell {
     
     func set(favourite: Follower) {
         usernameLabel.text = favourite.login
-        avatarImageView.downloadImage(from: favourite.avatarUrl)
+        avatarImageView.downloadAvatarImage(fromURL: favourite.avatarUrl)
     }
     
     private func configure() {
-        addSubview(avatarImageView)
-        addSubview(usernameLabel)
+        addSubviews(avatarImageView, usernameLabel)
         
         accessoryType = .disclosureIndicator
         let padding: CGFloat = 12

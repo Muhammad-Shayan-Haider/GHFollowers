@@ -13,7 +13,6 @@ class GFItemInfoVC: UIViewController {
     let itemInfoViewOne = GFItemInfoView()
     let itemInfoViewTwo = GFItemInfoView()
     let actionButton = GFButton()
-    weak var delegate: UserInfoVCDelegate!
     
     var user: User!
     
@@ -51,8 +50,7 @@ class GFItemInfoVC: UIViewController {
     }
     
     private func layoutUI() {
-        view.addSubview(stackView)
-        view.addSubview(actionButton)
+        view.addSubviews(stackView, actionButton)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         actionButton.translatesAutoresizingMaskIntoConstraints = false

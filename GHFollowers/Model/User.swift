@@ -8,7 +8,6 @@
 import Foundation
 
 struct User: Codable {
-    
     let login: String
     let avatarUrl: String
     var name: String?
@@ -19,5 +18,5 @@ struct User: Codable {
     let htmlUrl: String
     let following: Int
     let followers: Int
-    let createdAt: String
+    let createdAt: Date
 }

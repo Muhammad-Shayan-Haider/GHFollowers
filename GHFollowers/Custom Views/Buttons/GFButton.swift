@@ -23,12 +23,11 @@ class GFButton: UIButton {
     }
     
     // Custom init
-    init(backgroudColor: UIColor, title: String) {
-        super.init(frame: .zero)
+    convenience init(backgroudColor: UIColor, title: String) {
+        self.init(frame: .zero)
         
         self.backgroundColor = backgroudColor
         self.setTitle(title, for: .normal)
-        configure()
     }
     
     private func configure() {
