@@ -48,3 +48,8 @@ class FavouriteCell: UITableViewCell {
         ])
     }
 }
+
+#Preview {
+    let cell = FavouriteCell(frame: .zero)
+    cell
+}

@@ -49,6 +49,21 @@ class FollowerListVC: GFDataLoadingVC {
         
         navigationController?.isNavigationBarHidden = false
     }
+    
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if followers.isEmpty && !isLoadingMoreFollowers {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "person.slash")
+            config.text = "No Followers"
+            config.secondaryText = "This user has no followers."
+            contentUnavailableConfiguration = config
+        } else if isSearching && filteredFollowers.isEmpty {
+            let config = UIContentUnavailableConfiguration.search()
+            contentUnavailableConfiguration = config
+        } else {
+            contentUnavailableConfiguration = nil
+        }
+    }
 
     func configureViewController() {
         view.backgroundColor = .systemBackground
@@ -127,13 +142,8 @@ class FollowerListVC: GFDataLoadingVC {
         if followers.count < 100 { self.hasMoreFollowers = false }
         
         self.followers.append(contentsOf: followers)
-        if followers.isEmpty {
-            let message = "This user does not have any followers."
-            DispatchQueue.main.async {
-                self.showEmptyStateView(with: message, in: self.view)
-            }
-        }
         self.updateData(on: self.followers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
     
     func getFollowers(username: String, page: Int) {
@@ -200,6 +210,7 @@ extension FollowerListVC: UISearchResultsUpdating {
             follower.login.lowercased().contains(filter.lowercased())
         })
         updateData(on: filteredFollowers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
 }
 

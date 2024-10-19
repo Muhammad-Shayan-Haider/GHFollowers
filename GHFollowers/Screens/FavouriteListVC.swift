@@ -42,15 +42,24 @@ class FavouriteListVC: GFDataLoadingVC {
         tableView.dataSource = self
     }
     
-    private func updateUI(_ favourites: [Follower]) {
-        if (favourites.isEmpty) {
-            self.showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen", in: self.view)
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if favourites.isEmpty {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "star")
+            config.text = "No Favourites"
+            config.secondaryText = "Add a favourite on the follower list screen"
+            contentUnavailableConfiguration = config
         } else {
-            self.favourites = favourites
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                self.view.bringSubviewToFront(self.tableView)
-            }
+            contentUnavailableConfiguration = nil
+        }
+    }
+    
+    private func updateUI(_ favourites: [Follower]) {
+        self.favourites = favourites
+        setNeedsUpdateContentUnavailableConfiguration()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.view.bringSubviewToFront(self.tableView)
         }
     }
     
@@ -97,9 +106,7 @@ extension FavouriteListVC: UITableViewDelegate, UITableViewDataSource {
             guard let error else {
                 self.favourites.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .left)
-                if self.favourites.isEmpty {
-                    self.showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen", in: self.view)
-                }
+                setNeedsUpdateContentUnavailableConfiguration()
                 return
             }
             self.presentGFAlert(title: "Unable to remove", message: error.rawValue, buttonTitle: "Ok")
